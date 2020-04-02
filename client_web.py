@@ -1,4 +1,6 @@
 import gevent
+from geventwebsocket.handler import WebSocketHandler
+from gevent.pywsgi import WSGIServer
 from flask import Flask, render_template, redirect, session, request, url_for
 from flask_sockets import Sockets
 from flask_oauthlib.client import OAuth, OAuthException
@@ -228,3 +230,8 @@ def get_random_name():
         "Joe McKeehen",
     ]
     return random.choice(names)
+
+
+if __name__ == '__main__':
+    http_server = WSGIServer(('',5000), app, handler_class=WebSocketHandler)
+    http_server.serve_forever()
